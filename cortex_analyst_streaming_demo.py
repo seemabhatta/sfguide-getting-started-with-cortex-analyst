@@ -12,20 +12,25 @@ import snowflake.connector
 import sseclient
 import streamlit as st
 
-DATABASE = "<DB>"
-SCHEMA = "<SCHEMA>"
-STAGE = "<STAGE>"
-FILE = "<FILE>"
+DATABASE = "CORTES_DEMO_2"
+SCHEMA = "CORTEX_DEMO"
+STAGE = "CORTEX_DEMO_V2_STAGE"
+FILE = "revenue_timeseries.yaml"
+
+# Use Streamlit's connection and secrets.toml for Snowflake
+conn = st.connection("snowflake")
 
 if "CONN" not in st.session_state or st.session_state.CONN is None:
-    # For troubleshooting your snowflake connection see https://docs.snowflake.com/en/developer-guide/python-connector/python-connector-connect
-    st.session_state.CONN = snowflake.connector.connect(
-        user="<USER>",
-        password="<PASSWORD>",
-        account="<ACCOUNT>",
-        warehouse="<WH>",
-        role="<ROLE>",
-    )
+    st.session_state.CONN = conn._instance  # Use the underlying Snowflake connection
+
+# Get account/host for REST API endpoint from secrets
+def get_host():
+    # Use the account identifier for the REST API host
+    account = st.secrets["connections"]["snowflake"].get("account")
+    # If account is in org-account format, use as is; else, append .snowflakecomputing.com
+    if "." in account:
+        return account
+    return f"{account}.snowflakecomputing.com"
 
 
 def get_conversation_history() -> list[dict[str, Any]]:
@@ -50,7 +55,7 @@ def send_message() -> requests.Response:
         "stream": True,
     }
     resp = requests.post(
-        url=f"https://{st.session_state.CONN.host}/api/v2/cortex/analyst/message",
+        url=f"https://{get_host()}/api/v2/cortex/analyst/message",
         json=request_body,
         headers={
             "Authorization": f'Snowflake Token="{st.session_state.CONN.rest.token}"',
