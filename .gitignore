@@ -1,0 +1,75 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.pyo
+*.pyd
+*.pdb
+*.whl
+.Python
+
+# Virtual environments
+.env
+.venv/
+venv/
+venv310/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Logs
+*.log
+
+# Test and coverage
+htmlcov/
+.coverage
+.tox/
+.nox/
+.pytest_cache/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+
+# Pyre
+.pyre/
+
+# Snowflake/Streamlit secrets
+.streamlit/secrets.toml
+
+# Data files
+*.csv
+*.tsv
+*.parquet
+*.h5
+*.db
+*.sqlite
+
+# Other
+*.bak
+*.tmp
+*.swp
+*.swo
+
+# Ignore user secrets and credentials
+secrets.toml
+.streamlit/secrets.toml
